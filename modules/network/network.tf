@@ -1,5 +1,5 @@
 resource "aws_vpc" "main-vpc" {
-  cidr_block       = var.cidr_block_main_vpc
+  cidr_block = var.cidr_block_main_vpc
 
   tags = {
     Name = "main-vpc"
@@ -7,8 +7,8 @@ resource "aws_vpc" "main-vpc" {
 }
 
 resource "aws_subnet" "public-subnet-a" {
-  vpc_id     = aws_vpc.main-vpc.id
-  cidr_block = var.cidr_block_public_subnet_a
+  vpc_id                  = aws_vpc.main-vpc.id
+  cidr_block              = var.cidr_block_public_subnet_a
   availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = true
 
@@ -18,8 +18,8 @@ resource "aws_subnet" "public-subnet-a" {
 }
 
 resource "aws_subnet" "private-subnet-a" {
-  vpc_id     = aws_vpc.main-vpc.id
-  cidr_block = var.cidr_block_private_subnet_a
+  vpc_id                  = aws_vpc.main-vpc.id
+  cidr_block              = var.cidr_block_private_subnet_a
   availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = false
 
@@ -112,8 +112,8 @@ resource "aws_route_table_association" "private-subnet-a-and-route-table-associa
 
 
 resource "aws_subnet" "private-subnet-b" {
-  vpc_id     = aws_vpc.main-vpc.id
-  cidr_block = var.cidr_block_private_subnet_b
+  vpc_id                  = aws_vpc.main-vpc.id
+  cidr_block              = var.cidr_block_private_subnet_b
   availability_zone       = "${var.aws_region}b"
   map_public_ip_on_launch = false
 

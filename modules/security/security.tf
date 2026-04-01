@@ -22,9 +22,9 @@ resource "aws_vpc_security_group_ingress_rule" "web_server_allow_http_from_alb_i
   security_group_id = aws_security_group.web-server-sg.id
   //cidr_ipv4         = "0.0.0.0/0"
   referenced_security_group_id = aws_security_group.alb-sg.id # On autorise le trafic HTTP provenant de l'ALB
-  from_port         = 80
-  ip_protocol       = "tcp"
-  to_port           = 80
+  from_port                    = 80
+  ip_protocol                  = "tcp"
+  to_port                      = 80
 }
 /*
 resource "aws_vpc_security_group_ingress_rule" "web_server_allow_https_inbound_rule" {
@@ -62,5 +62,5 @@ resource "aws_vpc_security_group_ingress_rule" "alb_https_inbound" {
 resource "aws_vpc_security_group_egress_rule" "alb_all_outbound" {
   security_group_id = aws_security_group.alb-sg.id
   cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1" 
+  ip_protocol       = "-1"
 }

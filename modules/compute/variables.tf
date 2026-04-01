@@ -18,7 +18,7 @@ variable "web-server-sg-id" {
   description = "ID of the web server security group"
   type        = string
 }
-variable "target_group_arn"{
+variable "target_group_arn" {
   description = "ARN of the target group for the load balancer"
   type        = string
 }

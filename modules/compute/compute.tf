@@ -15,8 +15,8 @@ data "aws_ami" "linux-amazon-ami" {
 }
 
 resource "aws_launch_template" "web_server_lt" {
-  image_id      = data.aws_ami.linux-amazon-ami.id
-  instance_type = "t3.micro"
+  image_id               = data.aws_ami.linux-amazon-ami.id
+  instance_type          = "t3.micro"
   vpc_security_group_ids = [var.web-server-sg-id]
 
   user_data = base64encode(<<-EOF
@@ -41,10 +41,10 @@ resource "aws_launch_template" "web_server_lt" {
 }
 
 resource "aws_autoscaling_group" "web_asg" {
-  desired_capacity    = 3
-  max_size            = 4
-  min_size            = 2
-  
+  desired_capacity = 3
+  max_size         = 4
+  min_size         = 2
+
   vpc_zone_identifier = [var.private-subnet-a-id, var.private-subnet-b-id]
   target_group_arns   = [var.target_group_arn]
 
