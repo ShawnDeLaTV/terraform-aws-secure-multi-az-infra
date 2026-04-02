@@ -9,7 +9,7 @@ L’objectif est de construire une architecture **hautement disponible, sécuris
 ## Architecture
 
 <p align="center">
-  <img src="./images/architecture.png" alt="Architecture" width="700"/>
+  <img src="./images/architecture2.png" alt="Architecture" width="700"/>
 </p>
 
 ---
@@ -42,8 +42,8 @@ Construire une infrastructure :
 
 ### Contrôle du trafic
 
-* Entrant : uniquement via un Application Load Balancer
-* Sortant : uniquement via des NAT Gateways
+* Entrant : uniquement via cloudfront -> load balancer
+* Sortant : uniquement via des NAT Gateways (pour les mises à jour)
 
 ### Defense in Depth
 
@@ -58,6 +58,7 @@ Construire une infrastructure :
 
 ### Réseau
 
+* Cloudfront
 * VPC dédié
 * 2 Availability Zones (pour la résilience)
 
@@ -100,7 +101,7 @@ Subnets privés :
 
 ### Entrant
 
-Internet → Load Balancer → instances privées
+Internet → Cloudfront -> Load Balancer → instances privées
 
 * Aucun accès direct aux instances
 * Point d’entrée unique contrôlé
@@ -118,9 +119,12 @@ Instances → NAT Gateway → Internet
 
 ### Security Groups
 
+Cloudfront : 
+* Autorise HTTPS uniquement (443) depuis 0.0.0.0/0
+
 Load Balancer :
 
-* Autorise HTTP (80) depuis 0.0.0.0/0
+* Autorise HTTP uniquement (80) depuis cloudfront
 
 Instances :
 

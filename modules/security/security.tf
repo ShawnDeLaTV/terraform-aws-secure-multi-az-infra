@@ -18,6 +18,7 @@ resource "aws_security_group" "alb-sg" {
   }
 }
 
+
 resource "aws_vpc_security_group_ingress_rule" "web_server_allow_http_from_alb_inbound_rule" {
   security_group_id = aws_security_group.web-server-sg.id
   //cidr_ipv4         = "0.0.0.0/0"
@@ -43,21 +44,27 @@ resource "aws_vpc_security_group_egress_rule" "web_server_allow_all_outbound_rul
 
 # --- RÈGLES POUR L'ALB ---
 
+//toutes les ips de cloudfront
+data "aws_ec2_managed_prefix_list" "cloudfront" {
+  name = "com.amazonaws.global.cloudfront.origin-facing"
+}
+
 resource "aws_vpc_security_group_ingress_rule" "alb_http_inbound" {
-  security_group_id = aws_security_group.alb-sg.id # <--- On cible l'ALB
-  cidr_ipv4         = "0.0.0.0/0"
+  security_group_id = aws_security_group.alb-sg.id 
+  //cidr_ipv4         = "0.0.0.0/0"
+  prefix_list_id   = data.aws_ec2_managed_prefix_list.cloudfront.id # On autorise le trafic HTTP provenant de CloudFront
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
 }
-
+/* Pas besoin d'autoriser le trafic HTTPS sur l'ALB car on utilise CloudFront pour faire du HTTPS et rediriger vers l'ALB en HTTP, de cette façon on n'a pas à gérer les certificats sur l'ALB (car on a un freetier)
 resource "aws_vpc_security_group_ingress_rule" "alb_https_inbound" {
   security_group_id = aws_security_group.alb-sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
   ip_protocol       = "tcp"
   to_port           = 443
-}
+}*/
 
 resource "aws_vpc_security_group_egress_rule" "alb_all_outbound" {
   security_group_id = aws_security_group.alb-sg.id
